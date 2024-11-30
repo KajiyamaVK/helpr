@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "pre-commit": "npm run lint && npm run test",
     "lint:be": "cd be && npm run lint",
     "lint:fe": "cd fe && npm run lint",
