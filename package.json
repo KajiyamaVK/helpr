@@ -24,6 +24,8 @@
   "homepage": "https://github.com/kajiyamaVK/helpr#readme",
   "description": "",
   "devDependencies": {
+
     "husky": "^9.1.7"
+
   }
 }

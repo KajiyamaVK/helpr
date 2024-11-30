@@ -6,6 +6,7 @@ import Image from "next/image";
 import botAvatar from "@/public/isaacAvatar.png"
 
 export default function ChatBaloon({ chatBaloonContent }: { chatBaloonContent: ChatBaloonProps[] }) {
+  console.log(chatBaloonContent)
   return(
     <div className="flex flex-col gap-4 max-w-[800px] w-[800px] h-[calc(100vh-200px)] overflow-y-auto">
       {chatBaloonContent.map(({ role, message }, index) => (

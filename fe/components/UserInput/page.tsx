@@ -46,6 +46,7 @@ export function UserInput({ setChatBaloonContent, chatBaloonContent = [] }: User
       <button 
         className="bg-slate-700 border border-slate-600 text-white px-4 py-2 rounded-md h-20 hover:bg-slate-600" 
         onClick={() => sendMessage(inputValue)}
+        disabled={inputValue.length === 0}
       >
         Enviar
       </button>
