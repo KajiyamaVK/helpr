@@ -1,4 +1,6 @@
-export function simpleChat(content: string) {
+import { Message } from '../interfaces';
+
+export function simpleChat(content: string): Message[] {
   return [
     {
       role: 'system',

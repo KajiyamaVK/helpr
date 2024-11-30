@@ -1,4 +1,4 @@
-export type Role = 'user' | 'assistant';
+export type Role = 'user' | 'assistant' | 'system';
 
 export type Model = 'gpt-4o' | 'gpt-4o-mini' | 'o1';
 
