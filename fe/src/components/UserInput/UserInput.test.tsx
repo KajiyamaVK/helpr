@@ -6,12 +6,14 @@ import { ChatBaloonProps } from '@/types/openAI';
 describe('UserInput Component', () => {
   const mockSetChatBaloonContent = jest.fn();
   const mockChatBaloonContent: ChatBaloonProps[] = [];
+  const mockResponse = { message: 'Bot response' };
 
   beforeEach(() => {
     jest.clearAllMocks();
     global.fetch = jest.fn(() =>
       Promise.resolve({
-        json: () => Promise.resolve({ message: 'Bot response' }),
+        ok: true,
+        json: () => Promise.resolve(mockResponse),
       })
     ) as jest.Mock;
   });
@@ -116,5 +118,30 @@ describe('UserInput Component', () => {
 
     expect(fetch).not.toHaveBeenCalled();
     expect(mockSetChatBaloonContent).not.toHaveBeenCalled();
+  });
+
+  it('handles API errors gracefully', async () => {
+    global.fetch = jest.fn(() =>
+      Promise.reject(new Error('API Error'))
+    ) as jest.Mock;
+
+    render(
+      <UserInput
+        setChatBaloonContent={mockSetChatBaloonContent}
+        chatBaloonContent={mockChatBaloonContent}
+      />
+    );
+
+    const textarea = screen.getByRole('textbox');
+    fireEvent.change(textarea, { target: { value: 'Hello' } });
+    fireEvent.keyDown(textarea, { key: 'Enter' });
+
+    await waitFor(() => {
+      expect(mockSetChatBaloonContent).toHaveBeenCalledTimes(2);
+      
+      expect(mockSetChatBaloonContent).toHaveBeenLastCalledWith([
+        { role: "bot", message: "Sorry, I encountered an error processing your message." }
+      ]);
+    });
   });
 }); 

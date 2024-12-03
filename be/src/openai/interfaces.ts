@@ -12,6 +12,22 @@ export interface Message {
   content: string;
 }
 
+interface ChatModeLanguage {
+  language: string;
+  label: string;
+}
+
+export interface ChatMode {
+  mode: string;
+  languages: ChatModeLanguage[];
+}
+
 export interface ChatModesResponse {
   chatModes: string[];
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  message: string;
 }

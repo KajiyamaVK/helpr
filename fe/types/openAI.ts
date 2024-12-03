@@ -1,6 +1,14 @@
 export type Role = "user" | "bot";
 
-export type ChatMode = "simpleChat" | "textReview";
+interface ChatModeLanguage {
+  language: string;
+  label: string;
+}
+
+export interface ChatMode {
+  mode: string;
+  languages: ChatModeLanguage[];
+}
 
 export interface ChatBaloonProps {
   role: Role;

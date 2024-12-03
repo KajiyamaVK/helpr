@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OpenaiController } from './openai.controller';
 import { OpenaiService } from '../service/openai.service';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 describe('OpenaiController', () => {
   let controller: OpenaiController;
@@ -14,6 +15,7 @@ describe('OpenaiController', () => {
           provide: OpenaiService,
           useValue: {
             runAI: jest.fn(),
+            getChatModes: jest.fn(),
           },
         },
       ],
@@ -28,13 +30,17 @@ describe('OpenaiController', () => {
   });
 
   describe('getOpenai', () => {
-    it('should return "Openai"', () => {
-      expect(controller.getOpenai()).toBe('Openai');
+    it('should return success response', () => {
+      expect(controller.getOpenai()).toEqual({
+        success: true,
+        data: 'Openai',
+        message: 'OpenAI service is running',
+      });
     });
   });
 
   describe('textReview', () => {
-    it('should call runAI with correct parameters', async () => {
+    it('should call runAI with correct parameters and return success response', async () => {
       const mockContent = 'test content';
       const mockResponse = 'AI response';
 
@@ -47,14 +53,18 @@ describe('OpenaiController', () => {
         aiType: 'textReview',
       });
       expect(result).toEqual({
-        message: mockResponse,
-        statusCode: 200,
+        success: true,
+        data: mockResponse,
+        message: 'Text review completed successfully',
       });
     });
 
-    it('should throw error when content is missing', async () => {
+    it('should throw HttpException when content is missing', async () => {
       await expect(controller.textReview({ content: '' })).rejects.toThrow(
-        'Content is required in the request body',
+        new HttpException(
+          'Content is required in the request body',
+          HttpStatus.BAD_REQUEST,
+        ),
       );
     });
   });
