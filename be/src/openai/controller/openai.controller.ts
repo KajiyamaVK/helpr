@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { OpenaiService } from '../service/openai.service';
 
 @Controller('openai')
@@ -27,5 +34,18 @@ export class OpenaiController {
       message: response,
       statusCode: 200,
     };
+  }
+
+  @Get('chat-modes')
+  async getChatModes() {
+    try {
+      const chatModes = await this.openaiService.getChatModes();
+      return { chatModes };
+    } catch (error) {
+      throw new HttpException(
+        'Failed to fetch chat modes',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

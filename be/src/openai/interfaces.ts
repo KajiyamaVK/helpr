@@ -11,3 +11,7 @@ export interface Message {
   role: Role;
   content: string;
 }
+
+export interface ChatModesResponse {
+  chatModes: string[];
+}
